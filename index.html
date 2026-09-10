@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ByteForge — an interactive playground for learning 8-bit binary and hexadecimal." />
+  <title>ByteForge — Binary & Hex Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="ByteForge home">
+        <span class="brand-mark">01</span>
+        <span>ByteForge</span>
+      </a>
+      <nav class="topnav" aria-label="Main navigation">
+        <button data-section="home">Home</button>
+        <button data-section="learn">Learn</button>
+        <button data-section="binary">Binary Lab</button>
+        <button data-section="hex">Hex Lab</button>
+      </nav>
+      <div class="top-stats">
+        <span id="streakBadge" class="pill">🔥 0 streak</span>
+        <span id="progressBadge" class="pill">0% learned</span>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="section hero-section active">
+        <div class="hero-copy">
+          <p class="eyebrow">DIGITAL NUMBER SYSTEMS</p>
+          <h1>Think in <span>bits</span>.<br>Read in <span>hex</span>.</h1>
+          <p class="hero-sub">Build the mental model behind binary and hexadecimal through tiny explanations, visual bit controls, and endless practice.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-section="binary">Start with 8-bit binary →</button>
+            <button class="btn ghost" data-section="learn">Learn the basics</button>
+          </div>
+          <div class="mini-facts">
+            <div><strong>8 bits</strong><span>1 byte</span></div>
+            <div><strong>0–255</strong><span>8-bit unsigned</span></div>
+            <div><strong>0–F</strong><span>hex digits</span></div>
+          </div>
+        </div>
+        <div class="hero-visual card glow-card">
+          <div class="visual-label">BYTE PREVIEW</div>
+          <div class="bit-row large" id="heroBits"></div>
+          <div class="hero-decimal"><span id="heroDecimal">173</span><small>decimal</small></div>
+          <div class="hero-hex"><span>AD</span><small>hex</small></div>
+          <div class="equation">1010 1101 = 173 = AD</div>
+        </div>
+      </section>
+
+      <section id="learn" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">LESSON 01</p>
+            <h2>Learn the model, not a trick.</h2>
+          </div>
+          <span class="completion" id="lessonStatus">0 / 4 lessons</span>
+        </div>
+        <div class="lesson-grid">
+          <article class="lesson-card card" data-lesson="binary-place-values">
+            <div class="lesson-icon">2<sup>n</sup></div>
+            <h3>Binary place values</h3>
+            <p>Every bit has a power-of-two weight: 128, 64, 32, 16, 8, 4, 2, 1.</p>
+            <div class="weights">128 · 64 · 32 · 16 · 8 · 4 · 2 · 1</div>
+            <button class="lesson-done">Mark learned</button>
+          </article>
+          <article class="lesson-card card" data-lesson="byte">
+            <div class="lesson-icon">8b</div>
+            <h3>What an 8-bit byte means</h3>
+            <p>Eight binary positions can represent 256 values, from 00000000 to 11111111.</p>
+            <div class="example-chip">00000000 → 0 &nbsp; | &nbsp; 11111111 → 255</div>
+            <button class="lesson-done">Mark learned</button>
+          </article>
+          <article class="lesson-card card" data-lesson="hex-digits">
+            <div class="lesson-icon">0F</div>
+            <h3>Hexadecimal digits</h3>
+            <p>Hex is base 16. After 9 come A, B, C, D, E, F — representing 10 through 15.</p>
+            <div class="hex-ribbon">0 1 2 3 4 5 6 7 8 9 A B C D E F</div>
+            <button class="lesson-done">Mark learned</button>
+          </article>
+          <article class="lesson-card card" data-lesson="nibbles">
+            <div class="lesson-icon">4b</div>
+            <h3>Why hex maps so neatly</h3>
+            <p>One hex digit represents exactly four bits. That group is called a nibble.</p>
+            <div class="example-chip">1010 = A &nbsp; · &nbsp; 1101 = D</div>
+            <button class="lesson-done">Mark learned</button>
+          </article>
+        </div>
+        <div class="conversion-card card">
+          <div>
+            <p class="eyebrow">REFERENCE</p>
+            <h3>Binary ↔ Hex lookup</h3>
+            <p>Split an 8-bit value into two 4-bit nibbles, then convert each nibble independently.</p>
+          </div>
+          <div class="lookup-grid" id="lookupGrid"></div>
+        </div>
+      </section>
+
+      <section id="binary" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PRACTICE MODE</p>
+            <h2>8-bit Binary Lab</h2>
+            <p>Use the bits or type the answer. Keep going until your brain stops thinking about the arithmetic.</p>
+          </div>
+          <div class="challenge-stats">
+            <span id="binaryScore">0 correct</span>
+            <span id="binaryAccuracy">100% accuracy</span>
+          </div>
+        </div>
+
+        <div class="lab-layout">
+          <div class="card challenge-card">
+            <div class="challenge-top"><span class="mode-tag">DECIMAL → BINARY</span><span id="binaryTimer">∞</span></div>
+            <div class="prompt-label">Convert this number to 8-bit binary:</div>
+            <div class="big-number" id="binaryPrompt">173</div>
+            <div class="bit-row interactive" id="binaryBits"></div>
+            <div class="answer-row">
+              <input id="binaryInput" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="e.g. 10101101" aria-label="Binary answer" />
+              <button class="btn primary" id="binaryCheck">Check</button>
+            </div>
+            <div id="binaryFeedback" class="feedback" aria-live="polite"></div>
+            <button class="next-link" id="binaryNext">Skip →</button>
+          </div>
+
+          <aside class="card side-card">
+            <div class="side-header"><span>Bit weights</span><span>State</span></div>
+            <div id="weightsList" class="weights-list"></div>
+            <div class="formula-box"><span>Decimal</span><strong id="bitFormula">0</strong><small>Sum the weights where the bit is 1.</small></div>
+          </aside>
+        </div>
+
+        <div class="mode-switch card">
+          <span>Want the reverse direction?</span>
+          <button class="switch-btn" id="binaryDirection">Binary → Decimal</button>
+        </div>
+      </section>
+
+      <section id="hex" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PRACTICE MODE</p>
+            <h2>Hexadecimal Lab</h2>
+            <p>Hex becomes easy once you see each digit as a 4-bit nibble.</p>
+          </div>
+          <div class="challenge-stats">
+            <span id="hexScore">0 correct</span>
+            <span id="hexAccuracy">100% accuracy</span>
+          </div>
+        </div>
+
+        <div class="hex-layout">
+          <div class="card hex-explainer">
+            <div class="hex-example-title">The core mapping</div>
+            <div class="core-map">
+              <div><span class="mono">0000</span><b>0</b></div><div><span class="mono">0001</span><b>1</b></div><div><span class="mono">0010</span><b>2</b></div><div><span class="mono">0011</span><b>3</b></div>
+              <div><span class="mono">0100</span><b>4</b></div><div><span class="mono">0101</span><b>5</b></div><div><span class="mono">0110</span><b>6</b></div><div><span class="mono">0111</span><b>7</b></div>
+              <div><span class="mono">1000</span><b>8</b></div><div><span class="mono">1001</span><b>9</b></div><div><span class="mono">1010</span><b>A</b></div><div><span class="mono">1011</span><b>B</b></div>
+              <div><span class="mono">1100</span><b>C</b></div><div><span class="mono">1101</span><b>D</b></div><div><span class="mono">1110</span><b>E</b></div><div><span class="mono">1111</span><b>F</b></div>
+            </div>
+            <div class="hex-note"><strong>Example:</strong> 1101 0110 → D6 → 214 decimal</div>
+          </div>
+
+          <div class="card challenge-card">
+            <div class="challenge-top"><span class="mode-tag">HEX → BINARY</span><span>∞</span></div>
+            <div class="prompt-label">Convert this hexadecimal byte to 8-bit binary:</div>
+            <div class="big-number hex-prompt" id="hexPrompt">D6</div>
+            <div class="nibble-display"><span id="hexNibbleA">1101</span><span id="hexNibbleB">0110</span></div>
+            <div class="answer-row">
+              <input id="hexInput" maxlength="8" autocomplete="off" placeholder="e.g. 11010110" aria-label="Hex binary answer" />
+              <button class="btn primary" id="hexCheck">Check</button>
+            </div>
+            <div id="hexFeedback" class="feedback" aria-live="polite"></div>
+            <button class="next-link" id="hexNext">Skip →</button>
+          </div>
+        </div>
+
+        <div class="card hex-reference">
+          <div><p class="eyebrow">CHEAT SHEET</p><h3>Hex ↔ decimal</h3></div>
+          <div class="decimal-grid" id="decimalHexGrid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>ByteForge</span>
+      <span>Built for learning binary → hexadecimal → computers.</span>
+      <button id="resetProgress">Reset progress</button>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
